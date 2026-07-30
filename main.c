@@ -1,7 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(void) {
+// Declaration of the functions
+//void showMenu(void);
+void basicArithmetic(void);
+
+// Basic arithmetic operations menu
+void basicArithmetic(void){
     char choice = 'y';
     int option;
     int x, y;
@@ -11,19 +16,21 @@ int main(void) {
         #else
             system("clear");
         #endif
-        printf("Enter first number: ");
-        scanf("%d", &x);
-        printf("Enter second number: ");
-        scanf("%d", &y);
         printf("\n%-22s %-16s %s\n", "Name", "Example", "Description");
         printf("%-22s %-16s %s\n", "[ 1 ] Addition", "x + y", "Adds together two values");
         printf("%-22s %-16s %s\n", "[ 2 ] Subtraction", "x - y", "Subtracts one value from another");
         printf("%-22s %-16s %s\n", "[ 3 ] Multiplication", "x * y", "Multiplies two values");
         printf("%-22s %-16s %s\n", "[ 4 ] Division", "x / y", "Divides one value by another");
-        printf("[ 5 ] Clear screen.\n");
+        printf("[ 5 ] Return to the main menu..\n");
         printf("[ 6 ] Exit the program.\n");
         printf("Please select an option: ");
         scanf("%d", &option);
+        if (option >= 1 && option <= 4) {
+            printf("\nEnter first number: ");
+            scanf("%d", &x);
+            printf("Enter second number: ");
+            scanf("%d", &y);
+        }
         switch (option) {
             case 1: 
                 printf("\n--- Result ---\n");
@@ -48,24 +55,32 @@ int main(void) {
                     printf("Error: Cannot divide by zero.\n");
                 }
                 break;
-                
+
             case 5:
-                printf("Returning to main menu.\n");
-                break;
+                return;
 
             case 6:
                 printf("Exiting the program...\n");
-                return 0; // Sale del programa directamente
+                exit(0);
 
             default:
-                printf("Invalid option!\n");
+                printf("Error: Invalid option.\n");
                 break;
         }
-        printf("\nDo you want to perform another operation? (y/n): ");
-        scanf(" %c", &choice);
+    if (option >= 1 && option <= 4) {
+    printf("\nDo you want to perform another operation? (y/n): ");
+    scanf(" %c", &choice);
+}
 
     } while (choice == 'y' || choice == 'Y');
 
     printf("Exiting the program...\n");
+    exit(0);
+}
+
+// Main menu to be made...
+
+int main(void) {
+    basicArithmetic();
     return 0;
 }
