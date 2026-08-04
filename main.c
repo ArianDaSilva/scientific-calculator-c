@@ -2,21 +2,56 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+
+int angle_unit = 1;
+int decimal_precision = 2;
+
 // Declaration of the functions
-// void menu(void);
-void menu()
+void menu(void);
+void basicArithmetic(void);
+void advanced_option(void);
+void system_options(void);
+void clear_screen(void);
+
+void clear_screen(void)
 {
     #ifdef _WIN32
         system("cls");
     #else
         system("clear");
     #endif
+}
+
+void menu(void)
+{
+    int option;
+    do {
+    clear_screen();
     printf("\nCLI Calculator");
     printf("\n[ 1 ] Basic Arithmetics.");
     printf("\n[ 2 ] Advanced Options.");
     printf("\n[ 3 ] System Options.");
     printf("\n[ 4 ] Exit.");
     printf("\nPlease enter an option from the main menu:");
+    scanf("%d", &option);
+    switch (option)
+    {
+    case 1:
+        basicArithmetic();
+        break;
+    case 2:
+        advanced_option();
+        break;
+    case 3:
+        system_options();
+        break;
+    case 4:
+        exit(0);
+    default:
+        printf("Error: Invalid option.\n");
+        break;
+        }
+    } while (option != 4);
 }
 
 // Basic arithmetic operations menu
@@ -24,14 +59,10 @@ void basicArithmetic(void)
 {
     char choice = 'y';
     int option;
-    int x, y;
+    double x, y;
     do
     {
-        #ifdef _WIN32
-            system("cls");
-        #else
-            system("clear");
-        #endif
+        clear_screen();
         printf("\n%-22s %-16s %s\n", "Name", "Example", "Description");
         printf("%-22s %-16s %s\n", "[ 1 ] Addition", "x + y", "Adds together two values");
         printf("%-22s %-16s %s\n", "[ 2 ] Subtraction", "x - y", "Subtracts one value from another");
@@ -44,32 +75,32 @@ void basicArithmetic(void)
         if (option >= 1 && option <= 4)
         {
             printf("\nEnter first number: ");
-            scanf("%d", &x);
+            scanf("%lf", &x);
             printf("Enter second number: ");
-            scanf("%d", &y);
+            scanf("%lf", &y);
         }
         switch (option)
         {
         case 1:
             printf("\n--- Result ---\n");
-            printf("%d + %d = %d\n", x, y, x + y);
+            printf("%.*f + %.*f = %.*f\n", decimal_precision, x, decimal_precision, y, decimal_precision, x + y);
             break;
 
         case 2:
             printf("\n--- Result ---\n");
-            printf("%d - %d = %d\n", x, y, x - y);
+            printf("%.*f - %.*f = %.*f\n", decimal_precision, x, decimal_precision, y, decimal_precision, x - y);
             break;
 
         case 3:
             printf("\n--- Result ---\n");
-            printf("%d * %d = %d\n", x, y, x * y);
+            printf("%.*f * %.*f = %.*f\n", decimal_precision, x, decimal_precision, y, decimal_precision, x * y);
             break;
 
         case 4:
             printf("\n--- Result ---\n");
             if (y != 0)
             {
-                printf("%d / %d = %d\n", x, y, x / y);
+                printf("%.*f / %.*f = %.*f\n", decimal_precision, x, decimal_precision, y, decimal_precision, x / y);
             }
             else
             {
@@ -96,28 +127,24 @@ void basicArithmetic(void)
 
     } while (choice == 'y' || choice == 'Y');
 
-    printf("Exiting the program...\n");
-    exit(0);
+    printf("Returning to main menu...\n");
+    return;
 }
 
 //Advanced arithmetic operations menu
-void advanced_option()
+void advanced_option(void)
 {
     int option;
-    int x, y;
+    double x, y;
     bool exit_loop=false;
     while(!exit_loop)
     {
-        #ifdef _WIN32
-            system("cls");
-        #else
-            system("clear");
-        #endif
+        clear_screen();
         printf("\n%-22s %-16s %s\n", "Name", "Example", "Description");
         printf("%-22s %-16s %s\n", "[ 1 ] Exponentiation", "x^y", "Raises a base number to the power of an exponent");
         printf("%-22s %-18s %s\n", "[ 2 ] Square Root", "√x", "Finds the number equals to the input when multiplied by itself");
-        printf("%-22s %-16s %s\n", "[ 3 ] Mudulus", "x % y", "Returns the remainder left over after integer division");
-        printf("%-22s %-16s %s\n", "[ 4 ] Perecentage", "x%", "Calculate a specified portion out of a total of 100");
+        printf("%-22s %-16s %s\n", "[ 3 ] Modulus", "x % y", "Returns the remainder left over after integer division");
+        printf("%-22s %-16s %s\n", "[ 4 ] Percentage", "x%", "Calculate a specified portion out of a total of 100");
         printf("[ 5 ] Return to the main menu..\n");
         printf("[ 6 ] Exit the program.\n");
         printf("Please select an option: ");
@@ -131,32 +158,45 @@ void advanced_option()
         if(option == 1 || option == 3)
         {
             printf("\nEnter first number: ");
-            scanf("%d", &x);
+            scanf("%lf", &x);
             printf("Enter second number: ");
-            scanf("%d", &y);
+            scanf("%lf", &y);
         }
         switch (option)
         {
             case 1:
                 printf("\n--- Result ---\n");
-                printf("%d^%d = %d\n", x, y, pow(x,y));//2 decimales 
+               printf("%.*f^%.*f = %.*f\n", decimal_precision, x, decimal_precision, y, decimal_precision, pow(x, y));
                 break;
             case 2:
                 printf("\nEnter a number: ");
-                scanf("%d", &x);
+                scanf("%lf", &x);
                 printf("\n--- Result ---\n");
-                printf("√%d = %.2f\n",x,sqrt((double)x));
+                if (x >= 0) {
+                    printf("√%.*f = %.*f\n", decimal_precision, x, decimal_precision, sqrt((double)x));
+                }else{
+                    printf("Error: Cannot calculate the square root of a negative number.\n");
+                }
                 break;
             case 3:
                 printf("\n--- Result ---\n");
-                printf("%d %% %d = %d\n",x,y,x%y);
+                if (y != 0) {
+                    printf("%.*f %% %.*f = %.*f\n", decimal_precision, x, decimal_precision, y, decimal_precision, fmod(x, y));
+                }else{
+                    printf("Error: Cannot perform modulus by zero.\n");
+                }
                 break;
             case 4:
                 printf("\nEnter a number: ");
-                scanf("%d", &x);
+                scanf("%lf", &x);
                 printf("\n--- Result ---\n");
-                printf("%d%% = %.2f\n",x,(double)x/100);
+                printf("%.*f%% = %.*f\n", decimal_precision, x, decimal_precision, (double)x/100);
                 break;
+            case 5:
+                return;
+            case 6:
+                printf("Exiting the program...\n");
+                exit(0);
             default:
                 printf("Error: Invalid option.\n");
                 break;
@@ -167,45 +207,59 @@ void advanced_option()
         exit_loop = (choice == 'n' || choice == 'N');
     }
 }
-void system_options()
-{
+
+void system_options(void) {
+    int option1, option2, precision;
+    clear_screen();
+    printf("\n=== System Options ===\n");
+    printf("[ 1 ] Set Angle Unit (Degrees/Radians)\n");
+    printf("[ 2 ] Set Decimal Precision\n");
+    printf("[ 3 ] Return to Main Menu\n");
+    printf("Please select an option: ");
+    scanf("%d", &option1);
+    switch (option1) {
+        case 1:
+            printf("Angle Units:\n");
+            printf("[ 1 ] Degrees\n");
+            printf("[ 2 ] Radians\n");
+            printf("[ 3 ] Return to Main Menu\n");
+            printf("Please select an option: ");
+            scanf("%d", &option2);
+            if (option2 == 1 || option2 == 2) {
+                angle_unit = option2;
+            }else{
+                printf("Error: Invalid selection\n");
+            }
+            break;
+        case 2:
+            printf("Decimal Precision:\n");
+            printf("Enter the number of decimal places (0 to 6):");
+            scanf("%d", &precision);
+            if (precision >= 0 && precision <= 6) {
+                decimal_precision = precision;
+                printf("Decimal precision updated to: %d\n", decimal_precision);
+            } else {
+                printf("Error: Precision must be between 0 and 6.\n");
+            }
+            break;
+        case 3:
+            return;
+        default:
+            printf("Error: Invalid option.\n");
+            break;
+    }
+    printf("\nPress [ENTER] to return...");
+    getchar();
+    getchar();
 }
-int main()
+
+int main(void)
 {
-    bool exit_calc = false;
-    int input;
     printf("\n===========================\n");
     printf("WELCOME TO CLI CALCULATOR!");
     printf("\n===========================\n");
     printf("Press [ENTER] to access the main menu...");
-    while (!exit_calc)
-    {
-        input = getchar();
-        if (input == '\n')
-        {
-            menu();
-            input = getchar();
-            if (input == '1')
-            {
-                basicArithmetic();
-            }
-            else if (input == '2')
-            {
-                advanced_option();
-            }
-            else if (input == '3')
-            {
-                system_options();
-            }
-            else if (input == '4')
-            {
-                exit_calc = true;
-            }
-            else
-            {
-                menu();
-            }
-        }
-    }
+    getchar(); // Wait for user to press Enter
+    menu();
     return 0;
 }
