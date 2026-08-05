@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-int angle_unit = 1;
+int angle_unit = 1;//1-> degree 2 -> radians
 int decimal_precision = 2;
 
 // Declaration of the functions
@@ -137,6 +137,8 @@ void advanced_option(void)
     int option;
     double x, y;
     bool exit_loop=false;
+    char* angle_unit_name= (angle_unit==1) ? "degrees" : "radians";
+    double result;
     while(!exit_loop)
     {
         clear_screen();
@@ -145,16 +147,16 @@ void advanced_option(void)
         printf("%-22s %-18s %s\n", "[ 2 ] Square Root", "√x", "Finds the number equals to the input when multiplied by itself");
         printf("%-22s %-16s %s\n", "[ 3 ] Modulus", "x % y", "Returns the remainder left over after integer division");
         printf("%-22s %-16s %s\n", "[ 4 ] Percentage", "x%", "Calculate a specified portion out of a total of 100");
-        printf("[ 5 ] Return to the main menu..\n");
-        printf("[ 6 ] Exit the program.\n");
+        printf("%-22s %-16s %s %s\n", "[ 5 ] Cosine", "cos(x)", "Calculate the cosine of an angle in",angle_unit_name);
+        printf("%-22s %-16s %s %s\n", "[ 6 ] Sine", "sin(x)", "Calculate the sine of an angle in",angle_unit_name);
+        printf("%-22s %-16s %s %s\n", "[ 7 ] Tangent", "sin(x)", "Calculate the tangent of an angle in",angle_unit_name);
+        printf("%-22s %-16s %s %s\n", "[ 8 ] Arc Sine", "asin(x)", "Calculate the inverse sine, result in",angle_unit_name);
+        printf("%-22s %-16s %s %s\n", "[ 9 ] Arc Cosine", "acos(x)", "Calculate the inverse cosine, result in",angle_unit_name);
+        printf("%-22s %-16s %s %s\n", "[ 10 ] Arc Tangent", "atan(x)", "Calculate the inverse tangent, result in ",angle_unit_name);
+        printf("[ 11 ] Return to the main menu..\n");
+        printf("[ 12 ] Exit the program.\n");
         printf("Please select an option: ");
         scanf("%d", &option);
-        if(option==5) return;
-        if(option==6)
-        {
-            printf("Exiting the program...\n");
-            exit(0);
-        }
         if(option == 1 || option == 3)
         {
             printf("\nEnter first number: ");
@@ -193,8 +195,65 @@ void advanced_option(void)
                 printf("%.*f%% = %.*f\n", decimal_precision, x, decimal_precision, (double)x/100);
                 break;
             case 5:
-                return;
+                printf("\nEnter a number: ");
+                scanf("%lf", &x);
+                printf("\n--- Result ---\n");
+                result=(angle_unit==1)?x*M_PI/180:x;
+                printf("cos(%.*f) = %.*f\n", decimal_precision, x, decimal_precision, cos(result));
+                break;
             case 6:
+                printf("\nEnter a number: ");
+                scanf("%lf", &x);
+                printf("\n--- Result ---\n");
+                result=(angle_unit==1)?x*M_PI/180:x;
+                printf("sin(%.*f) = %.*f\n", decimal_precision, x, decimal_precision, sin(result));
+                break;
+            case 7:
+                printf("\nEnter a number: ");
+                scanf("%lf", &x);
+                printf("\n--- Result ---\n");
+                result=(angle_unit==1)?x*M_PI/180:x;
+                printf("tan(%.*f) = %.*f\n", decimal_precision, x, decimal_precision, tan(result));
+                break;
+            case 8:
+                printf("\nEnter a number: ");
+                scanf("%lf", &x);
+                printf("\n--- Result ---\n");
+                if(x > 1 || x < -1 ){
+                    printf("Domain error");
+                    break;
+                }
+                result=acos(x);//Devuelve siempre radianes
+                result=(angle_unit==1)?result*180/M_PI:result;
+                printf("acos(%.*f) = %.*f\n", decimal_precision, x, decimal_precision, result);
+                break;
+            case 9:
+                printf("\nEnter a number: ");
+                scanf("%lf", &x);
+                printf("\n--- Result ---\n");
+                if(x > 1 || x < -1 ){
+                    printf("Domain error");
+                    break;
+                }
+                result=asin(x);
+                result=(angle_unit==1)?result*180/M_PI:result;
+                printf("asin(%.*f) = %.*f\n", decimal_precision, x, decimal_precision, result);
+                break;
+            case 10:
+                printf("\nEnter a number: ");
+                scanf("%lf", &x);
+                printf("\n--- Result ---\n");
+                if(x > 1 || x < -1 ){
+                    printf("Domain error");
+                    break;
+                }
+                result=atan(x);
+                result=(angle_unit==1)?result*180/M_PI:result;
+                printf("atan(%.*f) = %.*f\n", decimal_precision, x, decimal_precision, result);
+                break;
+            case 11:
+                return;
+            case 12:
                 printf("Exiting the program...\n");
                 exit(0);
             default:
